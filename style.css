@@ -1,0 +1,23 @@
+#xxx{
+    background:green;
+    display:block;
+    width:100vw;
+     height:100vh; 
+  }
+  body{
+    margin:0px;
+  }
+  .actions{
+    left:0;
+    bottom:0;
+    position:fixed;
+  }
+  .actions > #brush{
+    display:none; 
+  }
+  .actions.x > #brush{
+    display:inline-block;
+  }
+  .actions.x > #eraser{
+    display:none;
+  }
