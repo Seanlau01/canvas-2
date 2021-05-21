@@ -7,6 +7,8 @@ var lastPoint = {
     x: undefined,
     y: undefined
 }
+var index=-1
+var historyArr=[]
 //函数执行区
 testSupportTouchDevice()
 autoSetCanvasSize()
@@ -44,6 +46,12 @@ function drawLine(x1, y1, x2, y2) {
         ctx.stroke()
         ctx.closePath()
         }
+function clearCanvas(){
+    ctx.clearRect(0,0,canvas.width,canvas.height)
+    changeCanvasBGColor()
+    historyArr=[]
+    index=-1
+}
 function usingToolbar(){
     pen.onclick=function(){
         eraserEnabled=false
@@ -55,9 +63,17 @@ function usingToolbar(){
         eraser.classList.add('active')
         pen.classList.remove('active')
         }
+        reback.onclick=function(){
+            if(index<=0){
+                clearCanvas()
+            }else{
+                index-=1
+                historyArr.pop()
+                ctx.putImageData(historyArr[index],0,0)
+            }
+        }
         clear.onclick=function(){
-            ctx.clearRect(0,0,canvas.width,canvas.height)
-            changeCanvasBGColor()
+            clearCanvas()  
         }
         download.onclick=function(){
             var url=canvas.toDataURL("image/png")
@@ -100,12 +116,29 @@ function usingToolbar(){
             blue.classList.remove('active')
             black.classList.add('active')
         }
+        color_picker.onclick=function(){
+            ctx.fillStyle=this.value
+            ctx.strokeStyle=this.value
+            red.classList.remove('active')
+            green.classList.remove('active')
+            blue.classList.remove('active')
+            black.classList.remove('active')
+        }
         thin.onclick=function(){
          lineWidth = 5
+         thin.classList.add('active')
+         thick.classList.remove('active')
         }
         thick.onclick=function(){
          lineWidth = 10
-        }
+         thin.classList.remove('active')
+         thick.classList.add('active')
+        } 
+        adjust_size.onclick=function(){
+            lineWidth=this.value
+            thin.classList.remove('active')
+            thick.classList.remove('active')
+        }      
 }
 function mouseEvent(){
     canvas.onmousedown = function (e) {
@@ -140,6 +173,10 @@ function mouseEvent(){
     }
     canvas.onmouseup = function (e) {
         using = false
+        if(e.type!='mouseout'){
+            historyArr.push(ctx.getImageData(0,0,canvas.width,canvas.height))
+            index+=1
+        }
       } 
 }
 function touchEvent(){
@@ -175,6 +212,10 @@ function touchEvent(){
     }
     canvas.ontouchend=function(e){
         using = false
+        if(e.type!='mouseout'){
+            historyArr.push(ctx.getImageData(0,0,canvas.width,canvas.height))
+            index+=1
+        }
     }
 }
 
