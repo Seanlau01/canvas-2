@@ -52,16 +52,26 @@ function clearCanvas(){
     historyArr=[]
     index=-1
 }
+function addActive(element){
+    element.forEach((value)=>{
+        value.classList.add('active')
+    })
+}
+function rmActive(element){
+    element.forEach((value)=>{
+        value.classList.remove('active')
+    })
+}
 function usingToolbar(){
     pen.onclick=function(){
         eraserEnabled=false
-        pen.classList.add('active')
-        eraser.classList.remove('active')
+        addActive([pen])
+        rmActive([eraser])
         }
         eraser.onclick=function(){
         eraserEnabled=true
-        eraser.classList.add('active')
-        pen.classList.remove('active')
+        addActive([eraser])
+        rmActive([pen])
         }
         reback.onclick=function(){
             if(index<=0){
@@ -84,60 +94,49 @@ function usingToolbar(){
             a.target='_blank'
             a.click()
         }
+        
         red.onclick=function(){
             ctx.fillStyle ='red'
             ctx.strokeStyle ='red'
-            red.classList.add('active')
-            green.classList.remove('active')
-            blue.classList.remove('active')
-            black.calssList.remove('active')
+            addActive([red])
+            rmActive([green,blue,black])
         }
         green.onclick=function(){
             ctx.fillStyle ='green'
             ctx.strokeStyle='green'
-            red.classList.remove('active')
-            green.classList.add('active')
-            blue.classList.remove('active')
-            black.classList.remove('active')
+            addActive([green])
+            rmActive([red,blue,black])
         }
         blue.onclick=function(){
             ctx.fillStyle='blue'
             ctx.strokeStyle='blue'
-            red.classList.remove('active')
-            green.classList.remove('active')
-            blue.classList.add('active')
-            black.classList.remove('active')
+            addActive([blue])
+            rmActive([red,green,black])
         }
         black.onclick=function(){
             ctx.fillStyle='black'
             ctx.strokeStyle='black'
-            red.classList.remove('active')
-            green.classList.remove('active')
-            blue.classList.remove('active')
-            black.classList.add('active')
+            addActive([black])
+            rmActive([red,green,blue])
         }
         color_picker.onclick=function(){
             ctx.fillStyle=this.value
             ctx.strokeStyle=this.value
-            red.classList.remove('active')
-            green.classList.remove('active')
-            blue.classList.remove('active')
-            black.classList.remove('active')
+            rmActive([red,green,blue,black])
         }
         thin.onclick=function(){
          lineWidth = 5
-         thin.classList.add('active')
-         thick.classList.remove('active')
+         addActive([thin])
+         rmActive([thick])
         }
         thick.onclick=function(){
          lineWidth = 10
-         thin.classList.remove('active')
-         thick.classList.add('active')
+         addActive([thick])
+         rmActive([thin])
         } 
         adjust_size.onclick=function(){
             lineWidth=this.value
-            thin.classList.remove('active')
-            thick.classList.remove('active')
+            rmActive([thin,thick])
         }      
 }
 function mouseEvent(){
